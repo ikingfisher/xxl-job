@@ -17,6 +17,7 @@ public enum ExecutorRouteStrategyEnum {
     LEAST_RECENTLY_USED(I18nUtil.getString("jobconf_route_lru"), new ExecutorRouteLRU()),
     FAILOVER(I18nUtil.getString("jobconf_route_failover"), new ExecutorRouteFailover()),
     BUSYOVER(I18nUtil.getString("jobconf_route_busyover"), new ExecutorRouteBusyover()),
+    IDLERESOURCE(I18nUtil.getString("jobconf_route_idle_resource"), new ExecutorIdleResource()),
     SHARDING_BROADCAST(I18nUtil.getString("jobconf_route_shard"), null);
 
     ExecutorRouteStrategyEnum(String title, ExecutorRouter router) {

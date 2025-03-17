@@ -11,6 +11,7 @@ public class XxlJobRegistry {
     private String registryGroup;
     private String registryKey;
     private String registryValue;
+    private String systemResource;
     private Date updateTime;
 
     public int getId() {
@@ -43,6 +44,14 @@ public class XxlJobRegistry {
 
     public void setRegistryValue(String registryValue) {
         this.registryValue = registryValue;
+    }
+
+    public String getSystemResource() {
+        return systemResource;
+    }
+
+    public void setSystemResource(String systemResource) {
+        this.systemResource = systemResource;
     }
 
     public Date getUpdateTime() {

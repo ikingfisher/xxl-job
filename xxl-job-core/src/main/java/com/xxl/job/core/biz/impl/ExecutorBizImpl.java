@@ -149,6 +149,12 @@ public class ExecutorBizImpl implements ExecutorBiz {
     }
 
     @Override
+    public ReturnT<String> update(RegistryParam registryParam) {
+        return new ReturnT<String>(ReturnT.SUCCESS_CODE, "executor update success.");
+    }
+
+
+    @Override
     public ReturnT<String> kill(KillParam killParam) {
         // kill handlerThread, and create new one
         JobThread jobThread = XxlJobExecutor.loadJobThread(killParam.getJobId());

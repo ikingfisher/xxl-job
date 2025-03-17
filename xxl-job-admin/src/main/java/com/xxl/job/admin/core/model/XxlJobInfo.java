@@ -42,6 +42,8 @@ public class XxlJobInfo {
 	private long triggerLastTime;	// 上次调度时间
 	private long triggerNextTime;	// 下次调度时间
 
+	private String requireResource;
+
 
 	public int getId() {
 		return id;
@@ -234,4 +236,8 @@ public class XxlJobInfo {
 	public void setTriggerNextTime(long triggerNextTime) {
 		this.triggerNextTime = triggerNextTime;
 	}
+
+	public String getRequireResource() { return requireResource; }
+
+	public void setRequireResource(String requireResource) { this.requireResource = requireResource; }
 }
