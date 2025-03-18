@@ -25,6 +25,8 @@ public class TriggerParam implements Serializable{
     private int broadcastIndex;
     private int broadcastTotal;
 
+    private String requireResource;
+
 
     public int getJobId() {
         return jobId;
@@ -122,6 +124,10 @@ public class TriggerParam implements Serializable{
         this.broadcastTotal = broadcastTotal;
     }
 
+    public String getRequireResource() { return requireResource; }
+
+    public void setRequireResource(String requireResource) { this.requireResource = requireResource; }
+
 
     @Override
     public String toString() {
@@ -138,6 +144,7 @@ public class TriggerParam implements Serializable{
                 ", glueUpdatetime=" + glueUpdatetime +
                 ", broadcastIndex=" + broadcastIndex +
                 ", broadcastTotal=" + broadcastTotal +
+                ", requireResource=" + requireResource +
                 '}';
     }
 

@@ -165,7 +165,7 @@ public class JobGroupController {
 					}
 
 					if (!registryList.contains(item.getRegistryValue())) {
-						registryList.add(item.getRegistryValue());
+						registryList.add(item.getRegistryValue()+";"+item.getSystemResource());
 					}
 					appAddressMap.put(appname, registryList);
 				}

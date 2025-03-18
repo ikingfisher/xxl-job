@@ -48,6 +48,11 @@ public class ExecutorBizClient implements ExecutorBiz {
     }
 
     @Override
+    public ReturnT<String> update(RegistryParam registryParam) {
+        return XxlJobRemotingUtil.postBody(addressUrl + "update", accessToken, timeout, registryParam, String.class);
+    }
+
+    @Override
     public ReturnT<String> kill(KillParam killParam) {
         return XxlJobRemotingUtil.postBody(addressUrl + "kill", accessToken, timeout, killParam, String.class);
     }

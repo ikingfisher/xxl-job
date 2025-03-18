@@ -137,6 +137,7 @@ public class XxlJobTrigger {
         triggerParam.setGlueUpdatetime(jobInfo.getGlueUpdatetime().getTime());
         triggerParam.setBroadcastIndex(index);
         triggerParam.setBroadcastTotal(total);
+        triggerParam.setRequireResource(jobInfo.getRequireResource());
 
         // 3、init address
         String address = null;
@@ -157,6 +158,7 @@ public class XxlJobTrigger {
         } else {
             routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobconf_trigger_address_empty"));
         }
+        logger.info(">>>>>>>>>>> xxl-job trigger executor address: {}, jobId:{}", address, jobLog.getId());
 
         // 4、trigger remote executor
         ReturnT<String> triggerResult = null;

@@ -29,6 +29,13 @@ public interface ExecutorBiz {
     public ReturnT<String> run(TriggerParam triggerParam);
 
     /**
+     * update
+     * @param registryParam
+     * @return
+     */
+    public ReturnT<String> update(RegistryParam registryParam);
+
+    /**
      * kill
      * @param killParam
      * @return

@@ -179,6 +179,7 @@ public class EmbedServer {
                     && !accessToken.equals(accessTokenReq)) {
                 return new ReturnT<String>(ReturnT.FAIL_CODE, "The access token is wrong.");
             }
+            logger.info(">>>>>>>>>>> EmbedHttpServerHandler process uri:{}. requestData: {}", uri, requestData);
 
             // services mapping
             try {
@@ -191,6 +192,9 @@ public class EmbedServer {
                     case "/run":
                         TriggerParam triggerParam = GsonTool.fromJson(requestData, TriggerParam.class);
                         return executorBiz.run(triggerParam);
+                    case "/update":
+                        RegistryParam registryParam = GsonTool.fromJson(requestData, RegistryParam.class);
+                        return executorBiz.update(registryParam);
                     case "/kill":
                         KillParam killParam = GsonTool.fromJson(requestData, KillParam.class);
                         return executorBiz.kill(killParam);

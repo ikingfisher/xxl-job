@@ -11,12 +11,14 @@ public class RegistryParam implements Serializable {
     private String registryGroup;
     private String registryKey;
     private String registryValue;
+    private String systemResource;
 
     public RegistryParam(){}
-    public RegistryParam(String registryGroup, String registryKey, String registryValue) {
+    public RegistryParam(String registryGroup, String registryKey, String registryValue,  String systemResource) {
         this.registryGroup = registryGroup;
         this.registryKey = registryKey;
         this.registryValue = registryValue;
+        this.systemResource = systemResource;
     }
 
     public String getRegistryGroup() {
@@ -43,12 +45,17 @@ public class RegistryParam implements Serializable {
         this.registryValue = registryValue;
     }
 
+    public String getSystemResource() { return systemResource; }
+
+    public void setSystemResource(String systemResource) { this.systemResource = systemResource; }
+
     @Override
     public String toString() {
         return "RegistryParam{" +
                 "registryGroup='" + registryGroup + '\'' +
                 ", registryKey='" + registryKey + '\'' +
                 ", registryValue='" + registryValue + '\'' +
+                ", systemResource='" + systemResource + '\'' +
                 '}';
     }
 }

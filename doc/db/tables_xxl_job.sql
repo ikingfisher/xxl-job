@@ -33,6 +33,7 @@ CREATE TABLE `xxl_job_info`
     `trigger_status`            tinyint(4)   NOT NULL DEFAULT '0' COMMENT '调度状态：0-停止，1-运行',
     `trigger_last_time`         bigint(13)   NOT NULL DEFAULT '0' COMMENT '上次调度时间',
     `trigger_next_time`         bigint(13)   NOT NULL DEFAULT '0' COMMENT '下次调度时间',
+    `require_resource`          varchar(32)           DEFAULT NULL COMMENT '资源需求，如：cpu=4,memory=1024MB',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -94,6 +95,7 @@ CREATE TABLE `xxl_job_registry`
     `registry_group` varchar(50)  NOT NULL,
     `registry_key`   varchar(255) NOT NULL,
     `registry_value` varchar(255) NOT NULL,
+    `system_resource` varchar(32) NOT NULL,
     `update_time`    datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `i_g_k_v` (`registry_group`, `registry_key`, `registry_value`) USING BTREE

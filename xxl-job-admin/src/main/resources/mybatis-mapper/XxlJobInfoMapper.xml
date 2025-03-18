@@ -36,6 +36,7 @@
 		<result column="trigger_status" property="triggerStatus" />
 		<result column="trigger_last_time" property="triggerLastTime" />
 		<result column="trigger_next_time" property="triggerNextTime" />
+		<result column="require_resource" property="requireResource" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -62,7 +63,8 @@
 		t.child_jobid,
 		t.trigger_status,
 		t.trigger_last_time,
-		t.trigger_next_time
+		t.trigger_next_time,
+		t.require_resource
 	</sql>
 
 	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
@@ -135,7 +137,8 @@
 			child_jobid,
 			trigger_status,
 			trigger_last_time,
-			trigger_next_time
+			trigger_next_time,
+			require_resource
 		) VALUES (
 			#{jobGroup},
 			#{jobDesc},
@@ -159,7 +162,8 @@
 			#{childJobId},
 			#{triggerStatus},
 			#{triggerLastTime},
-			#{triggerNextTime}
+			#{triggerNextTime},
+			#{requireResource}
 		);
 		<!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
@@ -197,7 +201,8 @@
 			child_jobid = #{childJobId},
 			trigger_status = #{triggerStatus},
 			trigger_last_time = #{triggerLastTime},
-			trigger_next_time = #{triggerNextTime}
+			trigger_next_time = #{triggerNextTime},
+			require_resource = #{requireResource}
 		WHERE id = #{id}
 	</update>
 
