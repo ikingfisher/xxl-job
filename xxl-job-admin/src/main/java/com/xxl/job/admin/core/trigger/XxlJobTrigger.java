@@ -154,6 +154,9 @@ public class XxlJobTrigger {
                 if (routeAddressResult.getCode() == ReturnT.SUCCESS_CODE) {
                     address = routeAddressResult.getContent();
                 }
+                if (routeAddressResult.getCode() == ReturnT.FAIL_CODE && ExecutorRouteStrategyEnum.IDLERESOURCE == executorRouteStrategyEnum) {
+                    logger.info(">>>>>>>>>>> xxl-job trigger resource not available, need waiting queue, jobId: {}", jobLog.getId());
+                }
             }
         } else {
             routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobconf_trigger_address_empty"));

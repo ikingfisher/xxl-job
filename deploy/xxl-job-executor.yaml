@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xxl-job-executor
+  labels:
+    app: xxl-job-executor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xxl-job-executor
+  template:
+    metadata:
+      name: xxl-job-executor
+      labels:
+        app: xxl-job-executor
+    spec:
+      containers:
+        - name: xxl-job-executor
+          command: [ "java", "-jar", "-XX:InitialRAMPercentage=60.0","-XX:MaxRAMPercentage=85.0", "/app/xxl-job-executor-sample-springboot-3.0.1-SNAPSHOT.jar", "--spring.config.location=/etc/config/" ]
+          image: xxl-job-admin:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: xxl-job-executor
+              mountPath: "/etc/config"
+              readOnly: true
+          ports:
+            - containerPort: 9999
+              protocol: TCP
+            - containerPort: 8081
+              protocol: TCP
+      restartPolicy: Always
+      volumes:
+        - name: xxl-job-executor
+          configMap:
+            name: xxl-job-executor
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xxl-job-executor
+data:
+  application.properties: |
+    # web port
+    server.port=8081
+    # no web
+    #spring.main.web-environment=false
+    
+    # log config
+    logging.config=classpath:logback.xml
+    
+    
+    ### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+    xxl.job.admin.addresses=http://xxl-job-admin.default.svc:8080/xxl-job-admin
+    ### xxl-job, access token
+    xxl.job.admin.accessToken=default_token
+    ### xxl-job timeout by second, default 3s
+    xxl.job.admin.timeout=3
+    
+    ### xxl-job executor appname
+    xxl.job.executor.appname=xxl-job-executor-sample
+    ### xxl-job executor registry-address: default use address to registry , otherwise use ip:port if address is null
+    xxl.job.executor.address=
+    ### xxl-job executor server-info
+    xxl.job.executor.ip=
+    xxl.job.executor.port=9999
+    ### xxl-job executor log-path
+    xxl.job.executor.logpath=./data/applogs/xxl-job/jobhandler
+    ### xxl-job executor log-retention-days
+    xxl.job.executor.logretentiondays=30
+  logback.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration debug="false" scan="true" scanPeriod="1 seconds">
+    
+    <contextName>logback</contextName>
+    <property name="log.path" value="./data/applogs/xxl-job/xxl-job-admin.log"/>
+    
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+    <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+    </appender>
+    
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${log.path}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+    <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+      </pattern>
+      </encoder>
+      </appender>
+      
+      <root level="info">
+      <appender-ref ref="console"/>
+      <appender-ref ref="file"/>
+      </root>
+      
+    </configuration>
