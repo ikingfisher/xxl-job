@@ -6,27 +6,43 @@ import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class SystemResource {
-    private static Logger logger = LoggerFactory.getLogger(SystemResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(SystemResource.class);
 
     public String idleResource() {
         SystemInfo si = new SystemInfo();
         CentralProcessor processor = si.getHardware().getProcessor();
         GlobalMemory memory = si.getHardware().getMemory();
 
-        // 获取CPU负载
+        // 获取CPU核心
         int cpuCores = processor.getLogicalProcessorCount();
         logger.info("CPU Cores: {}", cpuCores);
 
-        // 获取物理内存总量
-        long totalMemory = memory.getTotal();
-        logger.info("Total Memory: {}", totalMemory / 1024 / 1024 + " MB");
+        long availableMemory = 0;
+        String memCurrentPath = "/sys/fs/cgroup/memory.current";
+        String memMaxPath = "/sys/fs/cgroup/memory.max";
+        if (Files.exists(Paths.get(memCurrentPath)) && Files.exists(Paths.get(memMaxPath))) {
+            try {
+                // 读取文件内容
+                long current = Long.parseLong(new String(Files.readAllBytes(Paths.get(memCurrentPath))).trim());
+                long max = Long.parseLong(new String(Files.readAllBytes(Paths.get(memMaxPath))).trim());
+                availableMemory = (max - current)  / (1024 * 1024);
+            } catch (IOException e) {
+                logger.error("Error reading the file: {}", e.getMessage());
+            } catch (NumberFormatException e) {
+                logger.error("Error parsing long value from file content: {}",  e.getMessage());
+            }
+        } else {
+            // 获取可用物理内存
+            availableMemory = memory.getAvailable() / 1024 / 1024;
+        }
+        logger.info("Available Memory: {} MB", availableMemory);
 
-        // 获取可用物理内存
-        long availableMemory = memory.getAvailable();
-        logger.info("Available Memory: {}", availableMemory / 1024 / 1024 + " MB");
-
-        return "cpu=" + cpuCores +",memory="+ (availableMemory / 1024 / 1024 + "MB");
+        return "cpu=" + cpuCores +",memory="+ availableMemory + "MB";
     }
 
     /**
